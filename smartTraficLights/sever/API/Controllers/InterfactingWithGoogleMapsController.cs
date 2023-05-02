@@ -26,24 +26,24 @@ namespace API.Controllers
 
         }
 
-        public async Task<string> GetDistance(LocationClass l1, LocationClass l2)
-        {
-            HttpClient http = new HttpClient();
+        //public async Task<string> GetDistance(LocationClass l1, LocationClass l2)
+        //{
+        //    HttpClient http = new HttpClient();
 
-            string strL1 = l1.PointLatitudeLoctionX + "" + l1.PointLatitudeLoctiony;
+        //    string strL1 = l1.PointLatitudeLoctionX + "" + l1.PointLatitudeLoctiony;
 
-            string strL2 = l2.PointLatitudeLoctionX + "" + l2.PointLatitudeLoctiony;
-            var responseDistance = await http.GetAsync(DistanceURL(strL1, strL2));
-            if (responseDistance.IsSuccessStatusCode)
-            {
-                var myResult = responseDistance.Content.ReadAsStringAsync();
-                JsonFormat jsonResult = JsonConvert.DeserializeObject<>;
-                return jsonResult.rows[0].elemnts[0].distance.text;
+        //    string strL2 = l2.PointLatitudeLoctionX + "" + l2.PointLatitudeLoctiony;
+        //    var responseDistance = await http.GetAsync(DistanceURL(strL1, strL2));
+        //    if (responseDistance.IsSuccessStatusCode)
+        //    {
+        //        var myResult = responseDistance.Content.ReadAsStringAsync();
+        //        JsonFormat jsonResult = JsonConvert.DeserializeObject<>;
+        //        return jsonResult.rows[0].elemnts[0].distance.text;
 
-            }
+        //    }
 
-            //if not success;
-            return "";
-        }
+        //    //if not success;
+        //    return "";
+        //}
     }
 }

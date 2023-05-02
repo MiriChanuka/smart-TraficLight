@@ -1,0 +1,963 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NRedisGraph</name>
+    </assembly>
+    <members>
+        <member name="T:NRedisGraph.Edge">
+            <summary>
+            A class reprenting an edge (graph entity). In addition to the base class properties, an edge shows its source,
+            destination, and relationship type.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Edge.RelationshipType">
+            <summary>
+            The relationship type.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:NRedisGraph.Edge.Source">
+            <summary>
+            The ID of the source node.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:NRedisGraph.Edge.Destination">
+            <summary>
+            The ID of the desination node.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:NRedisGraph.Edge.Equals(System.Object)">
+            <summary>
+            Overriden from the base `Equals` implementation. In addition to the expected behavior of checking
+            reference equality, we'll also fall back and check to see if the: Source, Destination, and RelationshipType
+            are equal.
+            </summary>
+            <param name="obj">Another `Edge` object to compare to.</param>
+            <returns>True if the two instances are equal, false if not.</returns>
+        </member>
+        <member name="M:NRedisGraph.Edge.GetHashCode">
+            <summary>
+            Overriden from base to compute a deterministic hashcode based on RelationshipType, Source, and Destination.
+            </summary>
+            <returns>An integer representing the hash code for this instance.</returns>
+        </member>
+        <member name="M:NRedisGraph.Edge.ToString">
+            <summary>
+            Override from base to emit a string that contains: RelationshipType, Source, Destination, Id, and PropertyMap.
+            </summary>
+            <returns>A string containing a description of the Edge containing a RelationshipType, Source, Destination, Id, and PropertyMap.</returns>
+        </member>
+        <member name="T:NRedisGraph.GraphEntity">
+            <summary>
+            An abstract representation of a graph entity.
+            
+            A graph entity has an ID and a set of properties. The properties are mapped and accessed by their names.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.GraphEntity.Id">
+            <summary>
+            The ID of the entity.
+            </summary>
+            <value></value>
+        </member>
+        <member name="F:NRedisGraph.GraphEntity.PropertyMap">
+            <summary>
+            The collection of properties associated with an entity.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.GraphEntity.AddProperty(System.String,System.Object)">
+            <summary>
+            Add a property to the entity.
+            </summary>
+            <param name="name">Name of the property.</param>
+            <param name="value">Value of the property.</param>
+        </member>
+        <member name="M:NRedisGraph.GraphEntity.AddProperty(NRedisGraph.Property)">
+            <summary>
+            Add a property to the entity.
+            </summary>
+            <param name="property">The property to add.</param>
+        </member>
+        <member name="M:NRedisGraph.GraphEntity.RemoveProperty(System.String)">
+            <summary>
+            Remove a property from the entity by name.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="P:NRedisGraph.GraphEntity.NumberOfProperties">
+            <summary>
+            How many properties does this entity have?
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.GraphEntity.Equals(System.Object)">
+            <summary>
+            Overriden Equals that considers the equality of the entity ID as well as the equality of the
+            properties that each entity has.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.GraphEntity.GetHashCode">
+            <summary>
+            Overriden GetHashCode that computes a deterministic hash code based on the value of the ID
+            and the name/value of each of the associated properties.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.GraphEntity.ToString">
+            <summary>
+            Overriden ToString that emits a string containing the ID and property map of the entity.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.Header">
+            <summary>
+            Query response header interface. Represents the response schema (column names and types).
+            </summary>
+        </member>
+        <member name="T:NRedisGraph.Header.ResultSetColumnTypes">
+            <summary>
+            The expected column types.
+            </summary>
+        </member>
+        <member name="F:NRedisGraph.Header.ResultSetColumnTypes.COLUMN_UNKNOWN">
+            <summary>
+            Who can say?
+            </summary>
+        </member>
+        <member name="F:NRedisGraph.Header.ResultSetColumnTypes.COLUMN_SCALAR">
+            <summary>
+            A single value.
+            </summary>
+        </member>
+        <member name="F:NRedisGraph.Header.ResultSetColumnTypes.COLUMN_NODE">
+            <summary>
+            Refers to an actual node.
+            </summary>
+        </member>
+        <member name="F:NRedisGraph.Header.ResultSetColumnTypes.COLUMN_RELATION">
+            <summary>
+            Refers to a relation.
+            </summary>            
+        </member>
+        <member name="P:NRedisGraph.Header.SchemaTypes">
+            <summary>
+            Collection of the schema types present in the header.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:NRedisGraph.Header.SchemaNames">
+            <summary>
+            Collection of the schema names present in the header.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:NRedisGraph.Node">
+            <summary>
+            A class representing a node (graph entity). In addition to the base class ID and properties, a node has labels.
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.Node.AddLabel(System.String)">
+            <summary>
+            Adds a label to a node.
+            </summary>
+            <param name="label">Name of the label.</param>
+        </member>
+        <member name="M:NRedisGraph.Node.RemoveLabel(System.String)">
+            <summary>
+            Remove a label by name.
+            </summary>
+            <param name="label">Name of the label to remove.</param>
+        </member>
+        <member name="M:NRedisGraph.Node.GetLabel(System.Int32)">
+            <summary>
+            Get a label by index.
+            </summary>
+            <param name="index">Index of the label to get.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Node.GetNumberOfLabels">
+            <summary>
+            Get the count of labels on the node.
+            </summary>
+            <returns>Number of labels on a node.</returns>
+        </member>
+        <member name="M:NRedisGraph.Node.Equals(System.Object)">
+            <summary>
+            Overriden member that checks to see if the names of the labels of a node are equal 
+            (in addition to base `Equals` functionality).
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Node.GetHashCode">
+            <summary>
+            Overridden member that computes a hash code based on the base `GetHashCode` implementation
+            as well as the hash codes of all labels.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Node.ToString">
+            <summary>
+            Overridden member that emits a string containing the labels, ID, and property map of a node.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.NRedisGraphCompileTimeException">
+            <summary>
+            RedisGraph compile time exception.
+            
+            The intent here would be to throw the exception when there is an exception during the evaluation of a Cypher
+            query against RedisGraph, but I didn't see a way to discriminate between the exceptions that are throw by
+            StackExchange.Redis. So for now this isn't used.
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.NRedisGraphCompileTimeException.#ctor(System.String)">
+            <summary>
+            Create an instance using an error message.
+            </summary>
+            <param name="message">The error message.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.NRedisGraphCompileTimeException.#ctor(System.String,System.Exception)">
+            <summary>
+            Create an instance using an error message and an inner exception.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="inner">The inner exception.</param>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.NRedisGraphRunTimeException">
+            <summary>
+            RedisGraph runtime exception. This is thrown when RedisGraph encounters a runtime error during query execution.
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.NRedisGraphRunTimeException.#ctor(System.String)">
+            <summary>
+            Create an instance using just a message.
+            </summary>
+            <param name="message">The error message.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.NRedisGraphRunTimeException.#ctor(System.String,System.Exception)">
+            <summary>
+            Create an instance using a message and an inner exception.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="inner">The inner exception.</param>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.Path">
+            <summary>
+            This class represents a path in the graph.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Path.Nodes">
+            <summary>
+            Nodes that exist on this path.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Path.Edges">
+            <summary>
+            Edges that exist on this path.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Path.Length">
+            <summary>
+            How many edges exist on this path.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Path.NodeCount">
+            <summary>
+            How many nodes exist on this path.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Path.FirstNode">
+            <summary>
+            Get the first node on this path.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Path.LastNode">
+            <summary>
+            Get the last node on this path.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Path.GetNode(System.Int32)">
+            <summary>
+            Get a node by index.
+            </summary>
+            <param name="index">The index of the node that you want to get.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Path.GetEdge(System.Int32)">
+            <summary>
+            Get an edge by index.
+            </summary>
+            <param name="index">The index of the edge that you want to get.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Path.Equals(System.Object)">
+            <summary>
+            Overriden `Equals` method that will consider the equality of the Nodes and Edges between two paths.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Path.GetHashCode">
+            <summary>
+            Overridden `GetHashCode` method that will compute a hash code using the hash code of each node and edge on 
+            the path.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Path.ToString">
+            <summary>
+            Overridden `ToString` method that will emit a string based on the string values of the nodes and edges
+            on the path.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.Property">
+            <summary>
+            A graph entity property.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Property.Name">
+            <summary>
+            Name of the property.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:NRedisGraph.Property.Value">
+            <summary>
+            Value of the property.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:NRedisGraph.Property.#ctor(System.String,System.Object)">
+            <summary>
+            Create a property by specifying a name and a value.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:NRedisGraph.Property.Equals(System.Object)">
+            <summary>
+            Overridden method that considers the equality of the name and the value of two property instances.
+            </summary>
+            <param name="obj">Another instance of the property class.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Property.GetHashCode">
+            <summary>
+            Overridden method that computes the hash code of the class using the name and value of the property.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Property.ToString">
+            <summary>
+            Overridden method that emits a string containing the name and value of the property.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.Record">
+            <summary>
+            Container for RedisGraph result values.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Record.Keys">
+            <summary>
+            Keys associated with a record.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:NRedisGraph.Record.Values">
+            <summary>
+            Values associated with a record.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:NRedisGraph.Record.GetValue``1(System.Int32)">
+            <summary>
+            Get a value by index.
+            </summary>
+            <param name="index">The index of the value you want to get.</param>
+            <typeparam name="T">The type of the value at the index that you want to get.</typeparam>
+            <returns>The value at the index that you specified.</returns>
+        </member>
+        <member name="M:NRedisGraph.Record.GetValue``1(System.String)">
+            <summary>
+            Get a value by key name.
+            </summary>
+            <param name="key">The key of the value you want to get.</param>
+            <typeparam name="T">The type of the value that corresponds to the key that you specified.</typeparam>
+            <returns>The value that corresponds to the key that you specified.</returns>
+        </member>
+        <member name="M:NRedisGraph.Record.GetString(System.Int32)">
+            <summary>
+            Gets the string representation of a value at the given index.
+            </summary>
+            <param name="index">The index of the value that you want to get.</param>
+            <returns>The string value at the index that you specified.</returns>
+        </member>
+        <member name="M:NRedisGraph.Record.GetString(System.String)">
+            <summary>
+            Gets the string representation of a value by key.
+            </summary>
+            <param name="key">The key of the value that you want to get.</param>
+            <returns>The string value at the key that you specified.</returns>
+        </member>
+        <member name="M:NRedisGraph.Record.ContainsKey(System.String)">
+            <summary>
+            Does the key exist in the record?
+            </summary>
+            <param name="key">The key to check.</param>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Record.Size">
+            <summary>
+            How many keys are in the record?
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.Record.Equals(System.Object)">
+            <summary>
+            Overridden method that compares the keys and values of a record with another record.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Record.GetHashCode">
+            <summary>
+            Overridden method that generates a hash code based on the hash codes of the keys and values.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Record.ToString">
+            <summary>
+            Overridden method that emits a string of representing all of the values in a record.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.RedisGraph">
+            <summary>
+            RedisGraph client.
+            
+            This class facilitates querying RedisGraph and parsing the results.
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.#ctor(StackExchange.Redis.IDatabase)">
+            <summary>
+            Creates a RedisGraph client that leverages a specified instance of `IDatabase`.
+            </summary>
+            <param name="db"></param>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphQuery(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Execute a Cypher query with parameters.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="parameters">Parameters map.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.Query(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Execute a Cypher query with parameters.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="parameters">Parameters map.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphQuery(System.String,System.String)">
+            <summary>
+            Execute a Cypher query.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.Query(System.String,System.String)">
+            <summary>
+            Execute a Cypher query.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphQueryAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Execute a Cypher query with parameters.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="parameters">Parameters map.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.QueryAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Execute a Cypher query with parameters.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="parameters">Parameters map.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphQueryAsync(System.String,System.String)">
+            <summary>
+            Execute a Cypher query.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.QueryAsync(System.String,System.String)">
+            <summary>
+            Execute a Cypher query.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphReadOnlyQuery(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},StackExchange.Redis.CommandFlags)">
+            <summary>
+            Execute a Cypher query, preferring a read-only node.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="parameters">Parameters map.</param>
+            <param name="flags">Optional command flags. `PreferReplica` is set for you here.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphReadOnlyQuery(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Execute a Cypher query, preferring a read-only node.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="flags">Optional command flags. `PreferReplica` is set for you here.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphReadOnlyQueryAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},StackExchange.Redis.CommandFlags)">
+            <summary>
+            Execute a Cypher query, preferring a read-only node.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="parameters">Parameters map.</param>
+            <param name="flags">Optional command flags. `PreferReplica` is set for you here.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.GraphReadOnlyQueryAsync(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Execute a Cypher query, preferring a read-only node.
+            </summary>
+            <param name="graphId">A graph to perform the query on.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="flags">Optional command flags. `PreferReplica` is set for you here.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedure(System.String,System.String)">
+            <summary>
+            Call a saved procedure.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureAsync(System.String,System.String)">
+            <summary>
+            Call a saved procedure.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedure(System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Call a saved procedure with parameters.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureAsync(System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Call a saved procedure with parameters.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedure(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Call a saved procedure with parameters.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <param name="kwargs">A collection of keyword arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureAsync(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Call a saved procedure with parameters.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <param name="kwargs">A collection of keyword arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.Multi">
+            <summary>
+            Create a RedisGraph transaction.
+            
+            This leverages the "Transaction" support present in StackExchange.Redis.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.DeleteGraph(System.String)">
+            <summary>
+            Delete an existing graph.
+            </summary>
+            <param name="graphId">The graph to delete.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.DeleteGraphAsync(System.String)">
+            <summary>
+            Delete an existing graph.
+            </summary>
+            <param name="graphId">The graph to delete.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureReadOnly(System.String,System.String)">
+            <summary>
+            Call a saved procedure against a read-only node.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureReadOnlyAsync(System.String,System.String)">
+            <summary>
+            Call a saved procedure against a read-only node.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureReadOnly(System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Call a saved procedure with parameters against a read-only node.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureReadOnlyAsync(System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Call a saved procedure with parameters against a read-only node.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureReadOnly(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Call a saved procedure with parameters against a read-only node.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <param name="kwargs">A collection of keyword arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraph.CallProcedureReadOnlyAsync(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Call a saved procedure with parameters against a read-only node.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <param name="kwargs">A collection of keyword arguments.</param>
+            <returns>A result set.</returns>
+        </member>
+        <member name="T:NRedisGraph.RedisGraphTransaction">
+            <summary>
+            Allows for executing a series of RedisGraph queries as a single unit.
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.RedisGraphTransaction.QueryAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Execute a RedisGraph query with parameters.
+            </summary>
+            <param name="graphId">A graph to execute the query against.</param>
+            <param name="query">The Cypher query.</param>
+            <param name="parameters">The parameters for the query.</param>
+            <returns>A ValueTask, the actual result isn't known until `Exec` or `ExecAsync` is invoked.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraphTransaction.QueryAsync(System.String,System.String)">
+            <summary>
+            Execute a RedisGraph query with parameters.
+            </summary>
+            <param name="graphId">A graph to execute the query against.</param>
+            <param name="query">The Cypher query.</param>
+            <returns>A ValueTask, the actual result isn't known until `Exec` or `ExecAsync` is invoked.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraphTransaction.CallProcedureAsync(System.String,System.String)">
+            <summary>
+            Execute a saved procedure.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <returns>A ValueTask, the actual result isn't known until `Exec` or `ExecAsync` is invoked.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraphTransaction.CallProcedureAsync(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Execute a saved procedure with parameters.
+            </summary>
+            <param name="graphId">The graph containing the saved procedure.</param>
+            <param name="procedure">The procedure name.</param>
+            <param name="args">A collection of positional arguments.</param>
+            <param name="kwargs">A collection of keyword arguments.</param>
+            <returns>A ValueTask, the actual result isn't known until `Exec` or `ExecAsync` is invoked.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraphTransaction.DeleteGraphAsync(System.String)">
+            <summary>
+            Delete a graph.
+            </summary>
+            <param name="graphId">The name of the graph to delete.</param>
+            <returns>A ValueTask, the actual result isn't known until `Exec` or `ExecAsync` is invoked.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraphTransaction.Exec">
+            <summary>
+            Execute all of the commands that have been invoked on the transaction.
+            </summary>
+            <returns>A collection of results for all of the commands invoked before calling `Exec`.</returns>
+        </member>
+        <member name="M:NRedisGraph.RedisGraphTransaction.ExecAsync">
+            <summary>
+            Execute all of the commands that have been invoked on the transaction.
+            </summary>
+            <returns>A collection of results for all of the commands invoked before calling `ExecAsync`.</returns>
+        </member>
+        <member name="T:NRedisGraph.ResultSet">
+            <summary>
+            Represents the result from a RedisGraph query.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.ResultSet.Statistics">
+            <summary>
+            RedisGraph statistics associated with this result set.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:NRedisGraph.ResultSet.Header">
+            <summary>
+            RedisGraph header associated with this result set.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:NRedisGraph.ResultSet.Count">
+            <summary>
+            Number of records in the result.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:NRedisGraph.ResultSet.GetEnumerator">
+            <summary>
+            Get the enumerator for this result set.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.ResultSet.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Get the enumerator for this result set.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NRedisGraph.Statistics">
+            <summary>
+            Query result statistics are encapsulated by this class.
+            </summary>
+        </member>
+        <member name="T:NRedisGraph.Statistics.Label">
+            <summary>
+            A class that represents the various kinds of statistics labels.
+            
+            In JRedisGraph this was represented by using an `enum`, here we're using the "smart enum"
+            pattern to replicate the logic.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Statistics.Label.Value">
+            <summary>
+            The string value of this label.
+            </summary>
+            <value></value>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.LabelsAdded">
+            <summary>
+            Get a "Labels Added" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.IndicesAdded">
+            <summary>
+            Get an "Indices Added" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.IndicesCreated">
+            <summary>
+            Get an "Indices Created" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.IndicesDeleted">
+            <summary>
+            Get an "Indices Deleted" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.NodesCreated">
+            <summary>
+            Get a "Nodes Created" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.NodesDeleted">
+            <summary>
+            Get a "Nodes Deleted" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.RelationshipsDeleted">
+            <summary>
+            Get a "Relationships Deleted" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.PropertiesSet">
+            <summary>
+            Get a "Properties Set" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.RelationshipsCreated">
+            <summary>
+            Get a "Relationships Created" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.QueryInternalExecutionTime">
+            <summary>
+            Get a "Query Internal Execution Time" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.GraphRemovedInternalExecutionTime">
+            <summary>
+            Get a "Graph Removed Internal Execution Time" statistics label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:NRedisGraph.Statistics.Label.CachedExecution">
+            <summary>
+            Get a "Cached execution" statistics label.
+            </summary>
+        </member>
+        <member name="M:NRedisGraph.Statistics.Label.FromString(System.String)">
+            <summary>
+            Return an Label based on a string value provided.
+            </summary>
+            <param name="labelValue">String value to map to a statistics label.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NRedisGraph.Statistics.GetStringValue(NRedisGraph.Statistics.Label)">
+            <summary>
+            Retrieves the relevant statistic.
+            </summary>
+            <param name="label">The requested statistic label.</param>
+            <returns>A string representation of the specific statistic or null</returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.NodesCreated">
+            <summary>
+            Number of nodes created.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.NodesDeleted">
+            <summary>
+            Number of nodes deleted.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.IndicesAdded">
+            <summary>
+            Number of indices added.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.IndicesCreated">
+            <summary>
+            Number of indices created.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.IndicesDeleted">
+            <summary>
+            Number of indices deleted.
+            </summary>
+        </member>
+        <member name="P:NRedisGraph.Statistics.LabelsAdded">
+            <summary>
+            Number of labels added.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.RelationshipsDeleted">
+            <summary>
+            Number of relationships deleted.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.RelationshipsCreated">
+            <summary>
+            Number of relationships created.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.PropertiesSet">
+            <summary>
+            Number of properties set.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.QueryInternalExecutionTime">
+            <summary>
+            How long the query took to execute.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.GraphRemovedInternalExecutionTime">
+            <summary>
+            How long it took to remove a graph.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:NRedisGraph.Statistics.CachedExecution">
+            <summary>
+            The execution plan was cached on RedisGraph.
+            </summary>
+        </member>
+    </members>
+</doc>
